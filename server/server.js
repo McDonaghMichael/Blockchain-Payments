@@ -1,8 +1,8 @@
 const express  = require('express');
 const fs       = require('fs');
 const { MNEMONIC, API_KEY, DB_PATH, WALLETS_WEBHOOK_URL } = require('../core/config');
-const { getPayment, listPayments } = require('../db');
-const { createPayment, resumePending } = require('../payments');
+const { getPayment, listPayments } = require('../core/db');
+const { createPayment, resumePending } = require('../payments/payments');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;

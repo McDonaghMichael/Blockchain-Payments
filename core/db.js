@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { DB_PATH } = require('./core/config');
+const { DB_PATH } = require('./config');
 
 function readDb() {
     if (!fs.existsSync(DB_PATH)) return { nextIndex: 0, wallets: [], payments: [] };
@@ -12,9 +12,6 @@ function writeDb(data) {
     fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 }
 
-// ── Wallets ───────────────────────────────────────────────────────────────────
-
-// Atomically claim the next HD index (shared between wallets and payments)
 function allocateIndex() {
     const db = readDb();
     const index = db.nextIndex;
@@ -35,8 +32,6 @@ function createWallet(label = '') {
 function listWallets() {
     return readDb().wallets;
 }
-
-// ── Payments ──────────────────────────────────────────────────────────────────
 
 function savePayment(payment) {
     const db = readDb();

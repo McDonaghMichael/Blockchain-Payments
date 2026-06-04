@@ -1,17 +1,16 @@
 const { randomUUID }  = require('crypto');
 const { ethers }      = require('ethers');
-const { ETH_WS, POLYGON_WS, USDC_ETH, USDC_POLYGON, PAYMENT_TOLERANCE } = require('./core/config');
-const { allocateIndex, savePayment, getPayment, updatePayment, listPayments } = require('./db');
-const { deriveEvm, deriveBtc } = require('./core/derive');
-const { waitForUsdc } = require('./listeners/usdcListener');
-const { waitForEth }  = require('./listeners/ethListener');
-const { waitForBtc }  = require('./listeners/btcListener');
+const { ETH_WS, POLYGON_WS, USDC_ETH, USDC_POLYGON, PAYMENT_TOLERANCE } = require('../core/config');
+const { allocateIndex, savePayment, getPayment, updatePayment, listPayments } = require('../core/db');
+const { deriveEvm, deriveBtc } = require('../core/derive');
+const { waitForUsdc } = require('../listeners/usdcListener');
+const { waitForEth }  = require('../listeners/ethListener');
+const { waitForBtc }  = require('../listeners/btcListener');
 const { eurToCrypto } = require('./prices');
 
-const EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; 
 
-// Tracks active in-process listeners so we can cancel on expiry
-const active = new Map(); // paymentId → { expiryTimer }
+const active = new Map(); 
 
 async function createPayment({ amountEur, chain, webhookUrl = null }) {
     const walletIndex  = allocateIndex();

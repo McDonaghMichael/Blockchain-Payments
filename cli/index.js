@@ -2,16 +2,13 @@ const QRCode  = require('qrcode');
 const { ethers } = require('ethers');
 const { createInterface } = require('readline/promises');
 const bip39    = require('bip39');
-const { ETH_WS, POLYGON_WS, USDC_ETH, USDC_POLYGON, MNEMONIC } = require('./config');
-const { createWallet, listWallets } = require('../db');
-const { deriveEvm, deriveBtc } = require('./derive');
+const { ETH_WS, POLYGON_WS, USDC_ETH, USDC_POLYGON, MNEMONIC } = require('../core/config');
+const { createWallet, listWallets } = require('../core/db');
+const { deriveEvm, deriveBtc } = require('../core/derive');
 const { waitForUsdc } = require('../listeners/usdcListener');
 const { waitForEth }  = require('../listeners/ethListener');
 const { waitForBtc }  = require('../listeners/btcListener');
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function line(char = '─', len = 56) { return char.repeat(len); }
+const { line } = require('../utils/printing');
 
 function printWalletTable(wallets) {
     if (wallets.length === 0) { console.log('  No wallets yet.\n'); return; }
@@ -103,12 +100,8 @@ async function actionPay(rl) {
     console.log(`${line()}\n`);
 }
 
-// ── Main loop ─────────────────────────────────────────────────────────────────
-
 async function main() {
     if (!MNEMONIC) { console.error('Error: PHRASE not set in .env'); process.exit(1); }
-
-    console.log(bip39.generateMnemonic(256));
 
     const rl = createInterface({ input: process.stdin, output: process.stdout });
     console.log('\n╔══════════════════════════════════════╗');
