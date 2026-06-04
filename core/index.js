@@ -3,9 +3,11 @@ const { ethers } = require('ethers');
 const { createInterface } = require('readline/promises');
 const bip39    = require('bip39');
 const { ETH_WS, POLYGON_WS, USDC_ETH, USDC_POLYGON, MNEMONIC } = require('./config');
-const { createWallet, listWallets } = require('./db');
+const { createWallet, listWallets } = require('../db');
 const { deriveEvm, deriveBtc } = require('./derive');
-const { waitForUsdc, waitForBtc } = require('./listeners');
+const { waitForUsdc } = require('../listeners/usdcListener');
+const { waitForEth }  = require('../listeners/ethListener');
+const { waitForBtc }  = require('../listeners/btcListener');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 

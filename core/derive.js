@@ -24,7 +24,6 @@ function deriveBtc(index) {
     return address;
 }
 
-// Maps a Discord snowflake ID to a safe BIP32 child index
 function indexFromDiscordId(discordIdStr) {
     return Number(BigInt(discordIdStr) % 2147483648n);
 }
