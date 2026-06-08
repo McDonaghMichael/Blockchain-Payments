@@ -26,10 +26,9 @@ async function main() {
 
     switch (choice) {
       case "1":
-        await actionList();
+        await actionList(rl);
         break;
       case "2":
-        // Pass the promise-based rl down if needed
         await actionCreate(rl);
         break;
       case "3":

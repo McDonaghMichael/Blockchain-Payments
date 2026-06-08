@@ -41,6 +41,11 @@ function listWallets() {
   return readDb().wallets;
 }
 
+function getWalletByIndex(index) {
+  const db = readDb();
+  return db.wallets.find((w) => w.index === Number(index)) ?? null;
+}
+
 function savePayment(payment) {
   const db = readDb();
   db.payments.push(payment);
@@ -73,4 +78,5 @@ module.exports = {
   getPayment,
   updatePayment,
   listPayments,
+  getWalletByIndex,
 };

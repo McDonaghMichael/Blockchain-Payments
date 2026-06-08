@@ -15,10 +15,10 @@ async function printWalletTable(wallets) {
     return;
   }
   console.log(
-    `\n  ${"#".padEnd(4)} ${"Label".padEnd(18)} ${"BTC Address".padEnd(44)} ${"BTC Bal".padEnd(10)} ${"ETH Address".padEnd(44)} ETH Bal`,
+    `\n  ${"#".padEnd(4)} ${"Label".padEnd(18)} ${"BTC Address".padEnd(44)} ${"BTC Bal".padEnd(10)} ${"ETH Address".padEnd(44)} ${"ETH Bal".padEnd(7)}`,
   );
   console.log(
-    `  ${line("─", 4)} ${line("─", 18)} ${line("─", 42)} ${line("─", 11)} ${line("─", 44)}  ${line("─", 38)}`,
+    `  ${line("─", 4)} ${line("─", 18)} ${line("─", 42)} ${line("─", 11)} ${line("─", 44)}  ${line("─", 37)}`,
   );
   for (const w of wallets) {
     const lbl = (w.label || "—").padEnd(18);
@@ -38,7 +38,8 @@ async function printWalletTable(wallets) {
         `${evmAddress.padEnd(42)} | ` +
         `ETH: ${ethbal.eth.toFixed(2)} | ` +
         `USDC: ${tokenBal.usdc.toFixed(2)} | ` +
-        `EURC: ${tokenBal.eurc.toFixed(2)} | `,
+        `EURC: ${tokenBal.eurc.toFixed(2)} | ` +
+        `${new Date(w.createdAt).toLocaleDateString("en-IE")} | `,
     );
   }
   console.log();

@@ -1,4 +1,4 @@
-const { createWallet, listWallets } = require("../core/db");
+const { createWallet, listWallets, getWalletByIndex } = require("../core/db");
 const { deriveBtc, deriveEvm } = require("../core/derive");
 const { waitForUsdc } = require("../listeners/usdcListener");
 const { waitForEth } = require("../listeners/ethListener");
@@ -16,10 +16,19 @@ const {
   MNEMONIC,
 } = require("../core/config");
 
-async function actionList() {
+async function actionList(rl) {
   const wallets = listWallets();
   console.log(`\n${line()}\n  Wallets (${wallets.length} total)\n${line()}`);
-  await printWalletTable(wallets);
+  await printWalletTable(wallets).then(() =>
+    console.log(
+      "\n  Enter wallet index to view wallet or -1 to return to menu\n",
+    ),
+  );
+  const choice = (await rl.question("  > ")).trim();
+
+  if (choice !== "-1") {
+    await actionViewWallet(rl, choice);
+  }
 }
 
 async function actionCreate(rl) {
@@ -130,4 +139,19 @@ async function actionPay(rl) {
   console.log(`${line()}\n`);
 }
 
+async function actionViewWallet(rl, i) {
+  const wallet = getWalletByIndex(i);
+  const btcWallet = deriveBtc(wallet.index);
+  const ethWallet = deriveEvm(wallet.index);
+
+  console.log(`\n${line()}`);
+  console.log(
+    `  Wallet  : #${wallet.index}${wallet.label ? ` (${wallet.label})` : ""}`,
+  );
+  console.log(`  BTC Address : ${btcWallet.address}`);
+  console.log(`  ETH Address : ${ethWallet.address}`);
+  console.log(line());
+
+  await rl.question("Press Enter to return... ");
+}
 module.exports = { actionCreate, actionPay, actionList };
