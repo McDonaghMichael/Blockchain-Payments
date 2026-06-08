@@ -34,4 +34,29 @@ function waitForBtc(address, minSats) {
   });
 }
 
-module.exports = { waitForBtc };
+async function getBTCBalance(address) {
+  try {
+    const response = await fetch(
+      `https://mempool.space/api/address/${address}`,
+    );
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const data = await response.json();
+
+    const confirmedSatoshis =
+      data.chain_stats.funded_txo_sum - data.chain_stats.spent_txo_sum;
+    const mempoolSatoshis =
+      data.mempool_stats.funded_txo_sum - data.mempool_stats.spent_txo_sum;
+    const totalSatoshis = confirmedSatoshis + mempoolSatoshis;
+
+    return {
+      satoshis: totalSatoshis,
+      btc: totalSatoshis / 100000000,
+    };
+  } catch (error) {
+    console.error("Failed to fetch BTC balance:", error);
+    throw error;
+  }
+}
+
+module.exports = { waitForBtc, getBTCBalance };

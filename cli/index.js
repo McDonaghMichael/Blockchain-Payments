@@ -1,4 +1,7 @@
 const { createInterface } = require("readline/promises");
+
+const readline = require("node:readline/promises");
+const { stdin: input, stdout: output } = require("node:process");
 const { actionCreate, actionPay, actionList } = require("./actions");
 const { MNEMONIC } = require("../core/config");
 const { sendWalletsBackup } = require("../utils/backup");
@@ -9,7 +12,7 @@ async function main() {
     process.exit(1);
   }
 
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const rl = readline.createInterface({ input, output });
 
   console.log("\n╔══════════════════════════════════════╗");
   console.log("║       Blockchain Payment Manager     ║");
@@ -26,6 +29,7 @@ async function main() {
         await actionList();
         break;
       case "2":
+        // Pass the promise-based rl down if needed
         await actionCreate(rl);
         break;
       case "3":

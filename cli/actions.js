@@ -19,15 +19,19 @@ const {
 async function actionList() {
   const wallets = listWallets();
   console.log(`\n${line()}\n  Wallets (${wallets.length} total)\n${line()}`);
-  printWalletTable(wallets);
+  await printWalletTable(wallets);
 }
 
 async function actionCreate(rl) {
   const label = (await rl.question("  Label (optional): ")).trim();
   const entry = createWallet(label);
   console.log(`\n  Created wallet #${entry.index}`);
-  console.log(`  EVM Address : ${deriveEvm(entry.index)}`);
-  console.log(`  BTC Address : ${deriveBtc(entry.index)}\n`);
+  console.log(
+    `  EVM Address : ${deriveEvm(entry.index).address} | ${deriveEvm(entry.index).privateKey}`,
+  );
+  console.log(
+    `  BTC Address : ${deriveBtc(entry.index).address} | ${deriveBtc(entry.index).privateKey}\n`,
+  );
 }
 
 async function actionPay(rl) {
@@ -83,6 +87,7 @@ async function actionPay(rl) {
   console.log(`  Network : ${networkLabel}`);
   console.log(`  Amount  : ${amountRaw} ${currency}`);
   console.log(`  Address : ${address}`);
+  console.log(`  Etherscan : https://etherscan.io/address/${address}`);
   console.log(line());
   console.log(
     await QRCode.toString(qrContent, { type: "terminal", small: true }),

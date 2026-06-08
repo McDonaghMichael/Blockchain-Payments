@@ -9,7 +9,11 @@ function deriveEvm(index) {
   const seed = bip39.mnemonicToSeedSync(MNEMONIC);
   const master = hdkey.fromMasterSeed(seed);
   const child = master.derivePath(`m/44'/60'/0'/0/${index}`);
-  return child.getWallet().getAddressString().toLowerCase();
+  const wallet = child.getWallet();
+  return {
+    address: wallet.getAddressString().toLowerCase(),
+    privateKey: wallet.getPrivateKeyString(),
+  };
 }
 
 function deriveBtc(index) {
@@ -21,7 +25,10 @@ function deriveBtc(index) {
     pubkey: Buffer.from(child.publicKey),
     network: bitcoin.networks.bitcoin,
   });
-  return address;
+  return {
+    address,
+    privateKey: child.toWIF(),
+  };
 }
 
 function indexFromDiscordId(discordIdStr) {
