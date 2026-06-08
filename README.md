@@ -21,6 +21,12 @@ Other alternatives such as [BTCPay](https://btcpayserver.org/) are great, but on
 ```bash
 MNEMONIC="..." # BIP Phrase 24 Word Long
 WALLETS_WEBHOOK_URL="..." # Discord Webhook URL for backup
+PORT=... # Server Port for API
+API_KEY=... # Authentication API Key
+
+# Blockchain WebSocket API Keys
+ETH_WS_URL=""
+POLYGON_WS_URL=""
 ```
 
 ### Disclaimer
