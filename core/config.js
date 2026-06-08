@@ -5,7 +5,7 @@ require("dotenv").config({
 });
 
 module.exports = {
-  MNEMONIC: process.env.PHRASE,
+  MNEMONIC: process.env.MNEMONIC,
   API_KEY: process.env.API_KEY,
   ETH_WS: process.env.ETH_WS_URL,
   POLYGON_WS: process.env.POLYGON_WS_URL,
