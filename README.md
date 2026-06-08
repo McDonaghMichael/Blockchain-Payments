@@ -24,9 +24,12 @@ WALLETS_WEBHOOK_URL="..." # Discord Webhook URL for backup
 PORT=... # Server Port for API
 API_KEY=... # Authentication API Key
 
-# Blockchain WebSocket API Keys
-ETH_WS_URL=""
-POLYGON_WS_URL=""
+BALANCE_CHECKER=1 # 1 = Checks API for balance, 0 = leaves balances at 0.00
+
+# Blockchain WebSocket/REST API URL with keys
+ETH_WS_URL="wss://eth-mainnet.g.alchemy.com/v2/YOUR_KEY_HERE"
+ETH_API_URL="https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY_HERE"
+POLYGON_WS_URL="wss://polygon-mainnet.g.alchemy.com/v2/YOUR_KEY_HERE"
 ```
 
 ### Disclaimer

@@ -1,6 +1,7 @@
 const { ethers } = require("ethers");
 const WebSocket = require("ws");
 const { ERC20_ABI } = require("../core/config");
+const walletModule = require("ethereumjs-wallet");
 
 function waitForEth(wsUrl, address, minWei) {
   return new Promise((resolve, reject) => {
@@ -35,6 +36,9 @@ function waitForEth(wsUrl, address, minWei) {
 }
 
 async function getETHBalance(address) {
+  if (process.env.BALANCE_CHECKER == 0) {
+    return { wei: 0, eth: 0 };
+  }
   try {
     const response = await fetch(process.env.ETH_API_URL, {
       method: "POST",
@@ -69,6 +73,9 @@ async function getETHBalance(address) {
 }
 
 async function getTokensBalances(address) {
+  if (process.env.BALANCE_CHECKER == 0) {
+    return { usdc: 0, eurc: 0 };
+  }
   try {
     const response = await fetch(process.env.ETH_API_URL, {
       method: "POST",
@@ -119,4 +126,28 @@ async function getTokensBalances(address) {
   }
 }
 
-module.exports = { waitForEth, getETHBalance, getTokensBalances };
+function verifyEvmKeyPair(privateKeyHex, expectedAddress) {
+  try {
+    const cleanKey = privateKeyHex.startsWith("0x")
+      ? privateKeyHex.slice(2)
+      : privateKeyHex;
+    const keyBuffer = Buffer.from(cleanKey, "hex");
+
+    const Wallet = walletModule.Wallet || walletModule.default || walletModule;
+
+    const wallet = Wallet.fromPrivateKey(keyBuffer);
+    const derivedAddress = wallet.getAddressString().toLowerCase();
+
+    return derivedAddress === expectedAddress.toLowerCase();
+  } catch (error) {
+    console.error("Verification crash:", error);
+    return false;
+  }
+}
+
+module.exports = {
+  waitForEth,
+  getETHBalance,
+  getTokensBalances,
+  verifyEvmKeyPair,
+};

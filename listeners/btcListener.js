@@ -1,7 +1,9 @@
 const { ethers } = require("ethers");
 const WebSocket = require("ws");
 const { ERC20_ABI } = require("../core/config");
-
+const bitcoin = require("bitcoinjs-lib");
+const ecc = require("tiny-secp256k1");
+const { ECPairFactory } = require("ecpair");
 function waitForBtc(address, minSats) {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket("wss://mempool.space/api/v1/ws");
@@ -35,6 +37,10 @@ function waitForBtc(address, minSats) {
 }
 
 async function getBTCBalance(address) {
+  if (process.env.BALANCE_CHECKER == 0) {
+    return { satoshis: 0, btc: 0 };
+  }
+
   try {
     const response = await fetch(
       `https://mempool.space/api/address/${address}`,
@@ -59,4 +65,44 @@ async function getBTCBalance(address) {
   }
 }
 
-module.exports = { waitForBtc, getBTCBalance };
+const ECPair = ECPairFactory(ecc);
+
+function verifyBtcKeyPair(privateKeyHex, expectedAddress) {
+  try {
+    let keyPair;
+
+    if (/^[5KL]/.test(privateKeyHex)) {
+      keyPair = ECPair.fromWIF(privateKeyHex, bitcoin.networks.bitcoin);
+    } else {
+      const cleanKey = privateKeyHex.startsWith("0x")
+        ? privateKeyHex.slice(2)
+        : privateKeyHex;
+      keyPair = ECPair.fromPrivateKey(Buffer.from(cleanKey, "hex"), {
+        compressed: true,
+      });
+    }
+
+    let address;
+    if (expectedAddress.startsWith("bc1q")) {
+      ({ address } = bitcoin.payments.p2wpkh({
+        pubkey: keyPair.publicKey,
+        network: bitcoin.networks.bitcoin,
+      }));
+    } else if (expectedAddress.startsWith("3")) {
+      ({ address } = bitcoin.payments.p2sh({
+        redeem: bitcoin.payments.p2wpkh({ pubkey: keyPair.publicKey }),
+        network: bitcoin.networks.bitcoin,
+      }));
+    } else {
+      ({ address } = bitcoin.payments.p2pkh({
+        pubkey: keyPair.publicKey,
+        network: bitcoin.networks.bitcoin,
+      }));
+    }
+
+    return address === expectedAddress;
+  } catch {
+    return false;
+  }
+}
+module.exports = { waitForBtc, getBTCBalance, verifyBtcKeyPair };

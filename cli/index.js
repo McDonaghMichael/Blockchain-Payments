@@ -5,12 +5,17 @@ const { stdin: input, stdout: output } = require("node:process");
 const { actionCreate, actionPay, actionList } = require("./actions");
 const { MNEMONIC } = require("../core/config");
 const { sendWalletsBackup } = require("../utils/backup");
+const { validateWallets } = require("../utils/security");
 
 async function main() {
   if (!MNEMONIC) {
     console.error("Error: MNEMONIC not set in .env");
     process.exit(1);
   }
+
+  const validatedWallets = await validateWallets();
+
+  if (validatedWallets) process.exit(1);
 
   const rl = readline.createInterface({ input, output });
 
