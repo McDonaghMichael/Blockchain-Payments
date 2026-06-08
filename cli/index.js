@@ -1,6 +1,7 @@
 const { createInterface } = require("readline/promises");
 const { actionCreate, actionPay, actionList } = require("./actions");
 const { MNEMONIC } = require("../core/config");
+const { sendWalletsBackup } = require("../utils/backup");
 
 async function main() {
   if (!MNEMONIC) {
@@ -16,7 +17,7 @@ async function main() {
 
   while (true) {
     console.log(
-      "\n  1) List wallets\n  2) Create new wallet\n  3) Process payment\n  4) Exit\n",
+      "\n  1) List wallets\n  2) Create new wallet\n  3) Process payment\n  4) Send Wallet Backup\n  5) Exit\n",
     );
     const choice = (await rl.question("  > ")).trim();
 
@@ -31,6 +32,9 @@ async function main() {
         await actionPay(rl);
         break;
       case "4":
+        await sendWalletsBackup();
+        break;
+      case "5":
         console.log("Exiting...");
         rl.close();
         process.exit(0);
