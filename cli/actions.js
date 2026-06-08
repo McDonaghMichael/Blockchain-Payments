@@ -1,5 +1,5 @@
 const { createWallet, listWallets } = require("../core/db");
-const { deriveEvm, deriveBtc } = require("../core/derive");
+const { deriveBtc, deriveEvm } = require("../core/derive");
 const { waitForUsdc } = require("../listeners/usdcListener");
 const { waitForEth } = require("../listeners/ethListener");
 const { waitForBtc } = require("../listeners/btcListener");

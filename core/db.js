@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { DB_PATH } = require("./config");
+const { deriveEvm, deriveBtc } = require("./derive");
 
 function readDb() {
   if (!fs.existsSync(DB_PATH))
@@ -26,6 +27,8 @@ function createWallet(label = "") {
   const entry = {
     index: db.nextIndex,
     label,
+    evmAddress: deriveEvm(db.nextIndex),
+    btcAddress: deriveBtc(db.nextIndex),
     createdAt: new Date().toISOString(),
   };
   db.wallets.push(entry);

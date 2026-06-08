@@ -1,3 +1,5 @@
+const { deriveBtc, deriveEvm } = require("../core/derive");
+
 function line(char = "─", len = 56) {
   return char.repeat(len);
 }
