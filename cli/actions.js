@@ -148,8 +148,12 @@ async function actionViewWallet(rl, i) {
   console.log(
     `  Wallet  : #${wallet.index}${wallet.label ? ` (${wallet.label})` : ""}`,
   );
-  console.log(`  BTC Address : ${btcWallet.address}`);
-  console.log(`  ETH Address : ${ethWallet.address}`);
+  console.log(
+    `  BTC Address : ${btcWallet.address} | PK:  ${btcWallet.privateKey}`,
+  );
+  console.log(
+    `  ETH Address : ${ethWallet.address} | PK:  ${ethWallet.privateKey}`,
+  );
   console.log(line());
 
   await rl.question("Press Enter to return... ");
