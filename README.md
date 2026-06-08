@@ -16,6 +16,13 @@ Other alternatives such as [BTCPay](https://btcpayserver.org/) are great, but on
 | Polygon          	| [View Website](https://polygon.technology/) 	|
 | Bitcoin          	| [View Website](https://bitcoin.org/en/)     	|
 
+### Enviormental Variable Setup
+
+```bash
+MNEMONIC="..." # BIP Phrase 24 Word Long
+WALLETS_WEBHOOK_URL="..." # Discord Webhook URL for backup
+```
+
 ### Disclaimer
 ---
 **Blockchain Payments** is not responsible for any unauthorised access, usage or loss of funds associated with this software. If you notice any bugs that may result in loss of funds, access, please open up an [issue here](https://github.com/McDonaghMichael/Blockchain-Payments/issues) to have it resolved. Include the steps taken, any supporting documents (screenshots, videos, etc) to help with recreating the issue.
