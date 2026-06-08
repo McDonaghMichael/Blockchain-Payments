@@ -6,10 +6,14 @@ const { actionCreate, actionPay, actionList } = require("./actions");
 const { MNEMONIC } = require("../core/config");
 const { sendWalletsBackup } = require("../utils/backup");
 const { validateWallets } = require("../utils/security");
+const bip39 = require("bip39");
 
 async function main() {
   if (!MNEMONIC) {
-    console.error("Error: MNEMONIC not set in .env");
+    console.error(
+      "Error: MNEMONIC not set in .env. Below is a randomly generated mnemonic phrase.",
+    );
+    console.log(`> ${bip39.generateMnemonic(256)}`);
     process.exit(1);
   }
 
@@ -17,11 +21,11 @@ async function main() {
 
   if (validatedWallets) process.exit(1);
 
-  const rl = readline.createInterface({ input, output });
-
   console.log("\n╔══════════════════════════════════════╗");
   console.log("║       Blockchain Payment Manager     ║");
   console.log("╚══════════════════════════════════════╝");
+
+  const rl = readline.createInterface({ input, output });
 
   while (true) {
     console.log(
