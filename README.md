@@ -30,6 +30,11 @@ BALANCE_CHECKER=1 # 1 = Checks API for balance, 0 = leaves balances at 0.00
 ETH_WS_URL="wss://eth-mainnet.g.alchemy.com/v2/YOUR_KEY_HERE"
 ETH_API_URL="https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY_HERE"
 POLYGON_WS_URL="wss://polygon-mainnet.g.alchemy.com/v2/YOUR_KEY_HERE"
+
+# Discord Bot Functionality
+DISCORD_TOKEN=...
+ALLOWED_GUILDS=guild1id,guild2id,etc
+
 ```
 
 ### Disclaimer

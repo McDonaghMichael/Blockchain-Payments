@@ -158,4 +158,5 @@ async function actionViewWallet(rl, i) {
 
   await rl.question("Press Enter to return... ");
 }
+
 module.exports = { actionCreate, actionPay, actionList };
