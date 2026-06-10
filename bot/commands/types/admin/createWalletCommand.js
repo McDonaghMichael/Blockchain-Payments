@@ -54,7 +54,7 @@ module.exports = {
       .setTitle(`Wallet #${entry.index}${label ? ` — ${label}` : ""}`)
       .setColor(0x5865f2)
       .setDescription(
-        "__Notice__\n> Wallet addresses are intended for one-time use cases. If you are unsure of what address to send to, please reach out to a member of staff.\n\nThe blockchain links below are used so you can see the live transaction into the wallet\n\n**WARNING** Send screenshot with transaction details **BEFORE** sending, as sending over the wrong network or address will result in loss of funds which cannot be recovered. This is your only warning.",
+        "> Wallet addresses are intended for one-time use cases. If you are unsure of what address to send to, please reach out to a member of staff.\n\nThe blockchain links below are used so you can see the live transaction into the wallet\n\n**WARNING** Send screenshot with transaction details **BEFORE** sending, as sending over the wrong network or address will result in loss of funds which cannot be recovered. This is your only warning.",
       )
       .addFields(
         {
