@@ -59,7 +59,7 @@ module.exports = {
       .addFields(
         {
           name: "Ethereum Address (ETH, USDC, EURC)",
-          value: `\`${evm.address}\`\n[Blockchain](https://www.blockchain.com/explorer/addresses/eth/${evm.address}) | [Base](https://basescan.org/address/${evm.address}`,
+          value: `\`${evm.address}\`\n[Blockchain](https://www.blockchain.com/explorer/addresses/eth/${evm.address}) | [Base](https://basescan.org/address/${evm.address})`,
         },
         {
           name: "BTC Address",
