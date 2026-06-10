@@ -2,11 +2,17 @@ const { createInterface } = require("readline/promises");
 
 const readline = require("node:readline/promises");
 const { stdin: input, stdout: output } = require("node:process");
-const { actionCreate, actionPay, actionList } = require("./actions");
+const {
+  actionCreate,
+  actionPay,
+  actionList,
+  actionDecryptPK,
+} = require("./actions");
 const { MNEMONIC } = require("../core/config");
 const { sendWalletsBackup } = require("../utils/backup");
 const { validateWallets } = require("../utils/security");
 const bip39 = require("bip39");
+const { decrypt } = require("../utils/encryption");
 
 async function main() {
   if (!MNEMONIC) {
@@ -29,7 +35,7 @@ async function main() {
 
   while (true) {
     console.log(
-      "\n  1) List wallets\n  2) Create new wallet\n  3) Process payment\n  4) Send Wallet Backup\n  5) Exit\n",
+      "\n  1) List wallets\n  2) Create new wallet\n  3) Process payment\n  4) Send Wallet Backup\n  5) Decrypt PK\n  6) Exit\n",
     );
     const choice = (await rl.question("  > ")).trim();
 
@@ -47,6 +53,9 @@ async function main() {
         await sendWalletsBackup();
         break;
       case "5":
+        await actionDecryptPK(rl);
+        break;
+      case "6":
         console.log("Exiting...");
         rl.close();
         process.exit(0);

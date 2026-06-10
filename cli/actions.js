@@ -44,6 +44,12 @@ async function actionCreate(rl) {
   );
 }
 
+async function actionDecryptPK(rl) {
+  const privateKey = (await rl.question("  Private Key: ")).trim();
+  const decryptedKey = decrypt(privateKey);
+  console.log(`\n  Decrypted Key ${decryptedKey}`);
+}
+
 async function actionPay(rl) {
   const wallets = listWallets();
   if (wallets.length === 0) {
@@ -160,4 +166,4 @@ async function actionViewWallet(rl, i) {
   await rl.question("Press Enter to return... ");
 }
 
-module.exports = { actionCreate, actionPay, actionList };
+module.exports = { actionCreate, actionPay, actionList, actionDecryptPK };
