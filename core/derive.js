@@ -4,6 +4,7 @@ const bitcoin = require("bitcoinjs-lib");
 const ecc = require("tiny-secp256k1");
 const { BIP32Factory } = require("bip32");
 const { MNEMONIC } = require("./config");
+const { encrypt } = require("../utils/encryption");
 
 function deriveEvm(index) {
   const seed = bip39.mnemonicToSeedSync(MNEMONIC);
@@ -12,7 +13,7 @@ function deriveEvm(index) {
   const wallet = child.getWallet();
   return {
     address: wallet.getAddressString().toLowerCase(),
-    privateKey: wallet.getPrivateKeyString(),
+    privateKey: encrypt(wallet.getPrivateKeyString()),
   };
 }
 
@@ -27,7 +28,7 @@ function deriveBtc(index) {
   });
   return {
     address,
-    privateKey: child.toWIF(),
+    privateKey: encrypt(child.toWIF()),
   };
 }
 

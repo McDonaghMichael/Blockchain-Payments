@@ -23,7 +23,7 @@ MNEMONIC="..." # BIP Phrase 24 Word Long
 WALLETS_WEBHOOK_URL="..." # Discord Webhook URL for backup
 PORT=... # Server Port for API
 API_KEY=... # Authentication API Key
-
+ENCRYPTION_KEY=... # Encrypt the private key with this phrase so it can be stored in wallets.json
 BALANCE_CHECKER=1 # 1 = Checks API for balance, 0 = leaves balances at 0.00
 
 # Blockchain WebSocket/REST API URL with keys

@@ -15,6 +15,7 @@ const {
   USDC_POLYGON,
   MNEMONIC,
 } = require("../core/config");
+const { decrypt } = require("../utils/encryption");
 
 async function actionList(rl) {
   const wallets = listWallets();
@@ -36,10 +37,10 @@ async function actionCreate(rl) {
   const entry = createWallet(label);
   console.log(`\n  Created wallet #${entry.index}`);
   console.log(
-    `  EVM Address : ${deriveEvm(entry.index).address} | ${deriveEvm(entry.index).privateKey}`,
+    `  EVM Address : ${deriveEvm(entry.index).address} | ${decrypt(deriveEvm(entry.index).privateKey)}`,
   );
   console.log(
-    `  BTC Address : ${deriveBtc(entry.index).address} | ${deriveBtc(entry.index).privateKey}\n`,
+    `  BTC Address : ${deriveBtc(entry.index).address} | ${decrypt(deriveBtc(entry.index).privateKey)}\n`,
   );
 }
 
@@ -149,10 +150,10 @@ async function actionViewWallet(rl, i) {
     `  Wallet  : #${wallet.index}${wallet.label ? ` (${wallet.label})` : ""}`,
   );
   console.log(
-    `  BTC Address : ${btcWallet.address} | PK:  ${btcWallet.privateKey}`,
+    `  BTC Address : ${btcWallet.address} | PK:  ${decrypt(btcWallet.privateKey)}`,
   );
   console.log(
-    `  ETH Address : ${ethWallet.address} | PK:  ${ethWallet.privateKey}`,
+    `  ETH Address : ${ethWallet.address} | PK:  ${decrypt(ethWallet.privateKey)}`,
   );
   console.log(line());
 
