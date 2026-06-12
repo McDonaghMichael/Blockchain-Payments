@@ -6,6 +6,7 @@ const {
 } = require("discord.js");
 const { createWallet } = require("../../../../core/db");
 const { deriveBtc, deriveEvm, deriveLTC } = require("../../../../core/derive");
+const { validateWallets } = require("../../../../utils/security");
 
 module.exports = {
   data: new SlashCommandBuilder()

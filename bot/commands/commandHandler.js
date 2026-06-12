@@ -2,6 +2,7 @@ const { Collection, REST, Routes } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
+const { validateWallets } = require("../../utils/security");
 
 function loadCommandFiles(dir, commands = new Collection()) {
   for (const file of fs.readdirSync(dir)) {
@@ -92,7 +93,16 @@ module.exports = async (client, token) => {
     }
 
     try {
-      await command.execute(interaction, client);
+      const validatedWallets = await validateWallets();
+
+      if (!validatedWallets) {
+        await command.execute(interaction, client);
+      } else {
+        return interaction.reply({
+          content:
+            "🚨 MNEMONIC Phrase does not match the wallet address! I will not continue till it is resolved.",
+        });
+      }
     } catch (err) {
       console.error(`❌ Error executing ${interaction.commandName}`, err);
 
