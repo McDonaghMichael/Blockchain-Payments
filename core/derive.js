@@ -6,6 +6,8 @@ const { BIP32Factory } = require("bip32");
 const { MNEMONIC } = require("./config");
 const { encrypt } = require("../utils/encryption");
 
+const bip32 = BIP32Factory(ecc);
+
 const LTC_NETWORK = {
   messagePrefix: "\x19Litecoin Signed Message:\n",
   bech32: "ltc",
@@ -28,12 +30,13 @@ function deriveEvm(index) {
 
 function deriveLTC(index) {
   const seed = bip39.mnemonicToSeedSync(MNEMONIC);
-  const root = bitcoin.bip32.fromSeed(seed, LTC_NETWORK);
-  const child = root.derivePath(`m/44'/2'/0'/0/${index}`);
-  const { address } = bitcoin.payments.p2pkh({
+  const root = bip32.fromSeed(seed, LTC_NETWORK);
+  const child = root.derivePath(`m/84'/2'/0'/0/${index}`);
+  const { address } = bitcoin.payments.p2wpkh({
     pubkey: child.publicKey,
     network: LTC_NETWORK,
   });
+
   return {
     address,
     privateKey: encrypt(child.toWIF()),
