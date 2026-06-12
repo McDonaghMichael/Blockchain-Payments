@@ -6,6 +6,10 @@ const {
   verifyEvmKeyPair,
 } = require("../listeners/ethListener");
 
+const {
+  decrypt,
+} = require("../utils/encryption");
+const { sleep } = require("./misc");
 function line(char = "─", len = 56) {
   return char.repeat(len);
 }
@@ -27,8 +31,8 @@ async function printWalletTable(wallets) {
     const { privateKey: btcPK, address: btcAddress } = deriveBtc(w.index);
     const { privateKey: evmPK, address: evmAddress } = deriveEvm(w.index);
 
-    const btcVerified = verifyBtcKeyPair(btcPK, btcAddress) ? "✅" : "🚨";
-    const evmVerified = verifyEvmKeyPair(evmPK, evmAddress) ? "✅" : "🚨";
+    const btcVerified = verifyBtcKeyPair(decrypt(btcPK), btcAddress) ? "✅" : "🚨";
+    const evmVerified = verifyEvmKeyPair(decrypt(evmPK), evmAddress) ? "✅" : "🚨";
 
     const [btcbal, ethbal, tokenBal] = await Promise.all([
       getBTCBalance(btcAddress),
@@ -38,7 +42,7 @@ async function printWalletTable(wallets) {
 
     console.log(
       `  ${String(w.index).padEnd(4)} ${lbl.padEnd(4)} ${btcAddress.padEnd(42)} | ` +
-        `BTC: ${btcbal.btc.toFixed(2)} | ` +
+        `BTC: ${btcbal.btc} | ` +
         `STATUS: ${btcVerified} | ` +
         `${evmAddress.padEnd(42)} | ` +
         `ETH: ${ethbal.eth.toFixed(2)} | ` +
@@ -47,6 +51,8 @@ async function printWalletTable(wallets) {
         `STATUS: ${evmVerified} | ` +
         `${new Date(w.createdAt).toLocaleDateString("en-IE")} | `,
     );
+
+    await sleep(100);
   }
   console.log();
 }
