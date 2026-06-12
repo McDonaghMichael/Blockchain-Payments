@@ -5,7 +5,7 @@ const {
   MessageFlags,
 } = require("discord.js");
 const { createWallet } = require("../../../../core/db");
-const { deriveBtc, deriveEvm } = require("../../../../core/derive");
+const { deriveBtc, deriveEvm, deriveLTC } = require("../../../../core/derive");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -49,6 +49,7 @@ module.exports = {
     const entry = createWallet(label);
     const evm = deriveEvm(entry.index);
     const btc = deriveBtc(entry.index);
+    const ltc = deriveLTC(entry.index);
 
     const embed = new EmbedBuilder()
       .setTitle(`Wallet #${entry.index}${label ? ` — ${label}` : ""}`)
@@ -59,7 +60,11 @@ module.exports = {
       .addFields(
         {
           name: "Ethereum Address (ETH, USDC, EURC)",
-          value: `\`${evm.address}\`\n[Blockchain](https://www.blockchain.com/explorer/addresses/eth/${evm.address}) | [Base](https://basescan.org/address/${evm.address})`,
+          value: `\`${evm.address}\`\n\n> Address is support on networks **Ethereum**, **Base**, **Polygon** & **Arbitrum**.\n[Ethereum](https://www.blockchain.com/explorer/addresses/eth/${evm.address}) | [Base](https://basescan.org/address/${evm.address}) | [Polygon](https://polygonscan.com/address/${evm.address}) | [Arbiscan](https://arbiscan.io/address/${evm.address})`,
+        },
+        {
+          name: "LTC Address",
+          value: `\`${ltc.address}\`\n[LiteCoinSpace](https://litecoinspace.org/address/${ltc.address})`,
         },
         {
           name: "BTC Address",
